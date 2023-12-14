@@ -1,0 +1,113 @@
+PaymentID: 4KL791042L101183T
+PayerID: QYL38KVVEU64Q
+Details: Array
+(
+    [id] => 4KL791042L101183T
+    [intent] => CAPTURE
+    [status] => COMPLETED
+    [purchase_units] => Array
+        (
+            [0] => Array
+                (
+                    [reference_id] => default
+                    [amount] => Array
+                        (
+                            [currency_code] => USD
+                            [value] => 0.10
+                        )
+
+                    [payee] => Array
+                        (
+                            [email_address] => sb-nhg6j28700008@business.example.com
+                            [merchant_id] => GCSH5BX6ZALX2
+                        )
+
+                    [shipping] => Array
+                        (
+                            [name] => Array
+                                (
+                                    [full_name] => John Doe
+                                )
+
+                            [address] => Array
+                                (
+                                    [address_line_1] => 1 Main St
+                                    [admin_area_2] => San Jose
+                                    [admin_area_1] => CA
+                                    [postal_code] => 95131
+                                    [country_code] => US
+                                )
+
+                        )
+
+                    [payments] => Array
+                        (
+                            [captures] => Array
+                                (
+                                    [0] => Array
+                                        (
+                                            [id] => 5MJ8365171169200E
+                                            [status] => COMPLETED
+                                            [amount] => Array
+                                                (
+                                                    [currency_code] => USD
+                                                    [value] => 0.10
+                                                )
+
+                                            [final_capture] => 1
+                                            [seller_protection] => Array
+                                                (
+                                                    [status] => ELIGIBLE
+                                                    [dispute_categories] => Array
+                                                        (
+                                                            [0] => ITEM_NOT_RECEIVED
+                                                            [1] => UNAUTHORIZED_TRANSACTION
+                                                        )
+
+                                                )
+
+                                            [create_time] => 2023-12-12T17:24:03Z
+                                            [update_time] => 2023-12-12T17:24:03Z
+                                        )
+
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [payer] => Array
+        (
+            [name] => Array
+                (
+                    [given_name] => John
+                    [surname] => Doe
+                )
+
+            [email_address] => sb-hdzpp28700167@personal.example.com
+            [payer_id] => QYL38KVVEU64Q
+            [address] => Array
+                (
+                    [country_code] => US
+                )
+
+        )
+
+    [create_time] => 2023-12-12T17:23:09Z
+    [update_time] => 2023-12-12T17:24:03Z
+    [links] => Array
+        (
+            [0] => Array
+                (
+                    [href] => https://api.sandbox.paypal.com/v2/checkout/orders/4KL791042L101183T
+                    [rel] => self
+                    [method] => GET
+                )
+
+        )
+
+)
+
+

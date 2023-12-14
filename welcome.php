@@ -17,9 +17,9 @@ if (!isset($_SESSION['id'])) {
 
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1" >
-		<meta name="description" content="Explore Doccure Veterinary Template for exceptional pet care features for furry friends. Personalized and compassionate services now made easy with this exceptional template.">
-		<meta name="keywords" content="practo clone, doccure, doctor appointment, Practo clone html template, doctor booking template">
-		<meta name="author" content="Practo Clone HTML Template - Doctor Booking Template">
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+		<meta name="author" content="">
 
 		<title>PawPoint</title>
 		
@@ -117,7 +117,7 @@ if (!isset($_SESSION['id'])) {
 											<p class="text-muted mb-0">Patient</p>
 										</div>
 									</div>
-									<!-- <a class="dropdown-item" href="doctor-dashboard.html">Dashboard</a> -->
+									<a class="dropdown-item" href="patient-dashboard.php">Dashboard</a>
 									<a class="dropdown-item" href="profile-settings.html">Profile Settings</a>
 									<a class="dropdown-item" href="logout.php">Logout</a>
 								</div>

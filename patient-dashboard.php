@@ -1,38 +1,46 @@
 <?php
-// pet-details-users.php
 
+// Start the session
 session_start();
 
-// Check if the user is logged in
-if (!isset($_SESSION['id'])) {
-    header("Location: login.html");
-    exit;
-}
+// Establish database connection (replace these values with your database credentials)
+$servername = "capstone.project";
+$username = "root";
+$password = "";
+$dbname = "capstone";
 
-// Initialize MySQLi connection
-$mysqli = new mysqli("capstone.project", "root", "", "capstone");
+$conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
-if ($mysqli->connect_error) {
-    die("Connection failed: " . $mysqli->connect_error);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
-// Fetch user ID from session
-$user_id = $_SESSION['id'];
+// Check if user_id is set in the session
+if (isset($_SESSION['id'])) {
+    $user_id = $_SESSION['id'];
 
-// Fetch booking information for the user
-$fetchBookingQuery = "SELECT * FROM bookings WHERE user_id = ? ORDER BY id DESC LIMIT 1";
-$stmt = $mysqli->prepare($fetchBookingQuery);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
+    $sql = "SELECT * FROM payment_details WHERE user_id = ? ORDER BY id DESC LIMIT 1";
+    $stmt = $conn->prepare($sql);
 
-// Assuming there is only one booking per user
-if ($result->num_rows > 0) {
-    $booking = $result->fetch_assoc();
+    if (!$stmt) {
+        die("Prepare failed: " . $conn->error);
+    }
 
-    $bookingDate = $booking['date'];
-    $bookingTime = $booking['time'];
+    $stmt->bind_param("i", $user_id);
+
+    if ($stmt->execute()) {
+        $result = $stmt->get_result();
+        $user_data = $result->fetch_assoc();
+    } else {
+        die("Execute failed: " . $stmt->error);
+    }
+
+    $stmt->close();
+} else {
+    // Redirect or handle the case when user_id is not set in the session
+    header("Location: login.html");
+    exit();
 }
 
 ?>
@@ -40,16 +48,16 @@ if ($result->num_rows > 0) {
 <!DOCTYPE html> 
 <html lang="en">
 	<head>
-		
+
 		<meta charset="utf-8">
-		<title>PawPoint</title>
+		<title>Pawpoint</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="description" content="">
 		<meta name="keywords" content="">
 		<meta name="author" content="">
 		
 		<!-- Favicons -->
-		<link href="img/new_favicon.png" rel="icon">
+		<link href="img/favicon.png" rel="icon">
 		
 		<!-- Bootstrap CSS -->
 		<link rel="stylesheet" href="css/bootstrap.min.css">
@@ -60,11 +68,12 @@ if ($result->num_rows > 0) {
 
 		<!-- Feathericon CSS -->
     	<link rel="stylesheet" href="css/feather.css">
+
+		<!-- Apex Css -->
+		<link rel="stylesheet" href="plugins/apex/apexcharts.css">
 		
 		<!-- Main CSS -->
 		<link rel="stylesheet" href="css/custom.css">
-
-		<!-- <link rel="stylesheet" href="css/style.css"> -->
 	
 	</head>
 	<body>
@@ -90,7 +99,7 @@ if ($result->num_rows > 0) {
 						</div>
 						<div class="main-menu-wrapper">
 							<ul class="main-nav">
-								
+
 								<li>
 									<a href="welcome.php">Home</a>
 								</li>
@@ -142,11 +151,11 @@ if ($result->num_rows > 0) {
 				<div class="container">
 					<div class="row align-items-center inner-banner">
 						<div class="col-md-12 col-12 text-center">
-							<h2 class="breadcrumb-title">Checkout</h2>
+							<h2 class="breadcrumb-title">Dashboard</h2>
 							<nav aria-label="breadcrumb" class="page-breadcrumb">
 								<ol class="breadcrumb">
 									<li class="breadcrumb-item"><a href="welcome.php">Home</a></li>
-									<li class="breadcrumb-item" aria-current="page">Checkout</li>
+									<li class="breadcrumb-item" aria-current="page">Dashboard</li>
 								</ol>
 							</nav>
 						</div>
@@ -160,150 +169,136 @@ if ($result->num_rows > 0) {
 				<div class="container">
 
 					<div class="row">
-						<div class="col-md-7 col-lg-8">
-							<div class="card">
-								<div class="card-body">
-								
-									<!-- Checkout Form -->
-									<form action="booking-success.html">
-									
-										<!-- Personal Information -->
-										<div class="info-widget">
-											<h4 class="card-title">Personal Information</h4>
-											<div class="row">
-												<div class="col-md-6 col-sm-12">
-													<div class="mb-3 card-label">
-														<label class="mb-2">First Name</label>
-														<input class="form-control" type="text">
-													</div>
-												</div>
-												<div class="col-md-6 col-sm-12">
-													<div class="mb-3 card-label">
-														<label class="mb-2">Last Name</label>
-														<input class="form-control" type="text">
-													</div>
-												</div>
-												<div class="col-md-6 col-sm-12">
-													<div class="mb-3 card-label">
-														<label class="mb-2">Email</label>
-														<input class="form-control" type="email">
-													</div>
-												</div>
-												<div class="col-md-6 col-sm-12">
-													<div class="mb-3 card-label">
-														<label class="mb-2">Phone</label>
-														<input class="form-control" type="text">
-													</div>
-												</div>
-											</div>
-											<!-- <div class="exist-customer">Existing Customer? <a href="login.html">Click here to login</a></div> -->
-										</div>
-										<!-- /Personal Information -->
-										
-										<div class="payment-widget">
-											<h4 class="card-title">Payment Method</h4>
-											
-											<!-- Credit Card Payment -->
-	<!-- 										<div class="payment-list">
-												<label class="payment-radio credit-card-option">
-													<input type="radio" name="radio" checked>
-													<span class="checkmark"></span>
-													Credit card
-												</label>
-												<div class="row">
-													<div class="col-md-6">
-														<div class="mb-3 card-label">
-															<label for="card_name">Name on Card</label>
-															<input class="form-control" id="card_name" type="text">
-														</div>
-													</div>
-													<div class="col-md-6">
-														<div class="mb-3 card-label">
-															<label for="card_number">Card Number</label>
-															<input class="form-control" id="card_number" placeholder="1234 5678 9876 5432" type="text">
-														</div>
-													</div>
-													<div class="col-md-4">
-														<div class="mb-3 card-label">
-															<label for="expiry_month">Expiry Month</label>
-															<input class="form-control" id="expiry_month" placeholder="MM" type="text">
-														</div>
-													</div>
-													<div class="col-md-4">
-														<div class="mb-3 card-label">
-															<label for="expiry_year">Expiry Year</label>
-															<input class="form-control" id="expiry_year" placeholder="YY" type="text">
-														</div>
-													</div>
-													<div class="col-md-4">
-														<div class="mb-3 card-label">
-															<label for="cvv">CVV</label>
-															<input class="form-control" id="cvv" type="text">
-														</div>
-													</div>
-												</div>
-											</div> -->
-											<!-- /Credit Card Payment -->
-
-											<!-- Paypal Payment -->
-											<div class="payment-list">
-<!-- 												<label class="payment-radio paypal-option">
-													<input type="radio" name="radio">
-													<span class="checkmark"></span>
-													Paypal
-												</label> -->
-												<div id="paypal-payment-button" style="width: 120px;"></div>
-
-											</div>
-											<!-- /Paypal Payment -->
-											
-											<!-- Submit Section -->
-<!-- 											<div class="submit-section mt-4">
-												<button type="submit" class="btn btn-primary submit-btn">Confirm and Pay</button>
-											</div> -->
-											<!-- /Submit Section -->
-										</div>
-									</form>
-									<!-- /Checkout Form -->
-									
-								</div>
-							</div>
-							
-						</div>
 						
-						<div class="col-md-5 col-lg-4 theiaStickySidebar">
-						
-							<!-- Booking Summary -->
-							<div class="card booking-card">
-								<div class="card-header">
-									<h4 class="card-title">Booking Summary</h4>
-								</div>
-								<div class="card-body">									
-									<div class="booking-summary">
-										<div class="booking-item-wrap">
-											<ul class="booking-date">
-												<li>Date :<span> <?php echo $bookingDate; ?></span></li>
-												<li>Time :<span> <?php echo $bookingTime; ?></span></li>
-											</ul>
-											<ul class="booking-fee">
-												<li>Consulting Fee <span>$30</span></li>
-												<li>Estimated Tax <span>$2.66</span></li>
-												<!-- <li>Video Call <span>$32.66</span></li> -->
-											</ul>
-											<div class="booking-total">
-												<ul class="booking-total-list">
-													<li>
-														<span>Total</span>
-														<span class="total-cost">$32.66</span>
-													</li>
-												</ul>
-											</div>
+						<!-- Profile Sidebar -->
+						<div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
+							<div class="profile-sidebar">
+								<div class="widget-profile pro-widget-content">
+									<div class="profile-info-widget">
+										<a href="#" class="booking-doc-img">
+											<img src="img/patients/patient.jpg" alt="User Image">
+										</a>
+										<div class="profile-det-info">
+											<h3><?php echo $_SESSION['email']; ?></h3>
+<!-- 											<div class="patient-details">
+												<h5><i class="fas fa-birthday-cake"></i> 24 Jul 1983, 38 years</h5>
+												<h5 class="mb-0"><i class="fas fa-map-marker-alt"></i> Newyork, USA</h5>
+											</div> -->
 										</div>
 									</div>
 								</div>
+								<div class="dashboard-widget">
+									<nav class="dashboard-menu">
+										<ul>
+											<li class="active">
+												<a href="patient-dashboard.php">
+													<i class="fas fa-columns"></i>
+													<span>Dashboard</span>
+												</a>
+											</li>
+											<li>
+												<a href="profile-settings.html">
+													<i class="fas fa-user-cog"></i>
+													<span>Profile Settings</span>
+												</a>
+											</li>
+											<li>
+												<a href="change-password.html">
+													<i class="fas fa-lock"></i>
+													<span>Change Password</span>
+												</a>
+											</li>
+											<li>
+												<a href="logout.php">
+													<i class="fas fa-sign-out-alt"></i>
+													<span>Logout</span>
+												</a>
+											</li>
+										</ul>
+									</nav>
+								</div>
+
 							</div>
-							<!-- /Booking Summary -->
-							
+						</div>
+						<!-- / Profile Sidebar -->
+						
+						<div class="col-md-7 col-lg-8 col-xl-9">
+							<div class="card">
+								<div class="card-body pt-0">
+								
+									<!-- Tab Menu -->
+									<nav class="user-tabs mb-4">
+										<ul class="nav nav-tabs nav-tabs-bottom nav-justified">
+											<li class="nav-item">
+												<a class="nav-link active" data-bs-toggle="tab">Appointments</a>
+											</li>
+<!-- 											<li class="nav-item">
+												<a class="nav-link" href="#pat_prescriptions" data-bs-toggle="tab">Prescriptions</a>
+											</li>
+											<li class="nav-item">
+												<a class="nav-link" href="#pat_medical_records" data-bs-toggle="tab"><span class="med-records">Medical Records</span></a>
+											</li>
+											<li class="nav-item">
+												<a class="nav-link" href="#pat_billing" data-bs-toggle="tab">Billing</a>
+											</li> -->
+										</ul>
+									</nav>
+									<!-- /Tab Menu -->
+									
+									<!-- Tab Content -->
+									<div class="tab-content pt-0">
+										
+										<!-- Appointment Tab -->
+										<div id="pat_appointments" class="tab-pane fade show active">
+											<?php if (isset($_SESSION['id'])): ?>
+        										<?php if ($result->num_rows > 0): ?>
+											<div class="card card-table mb-0">
+												<div class="card-body">
+													<div class="table-responsive">
+														<table class="table table-hover table-center mb-0">
+															<thead>
+																<tr>
+																	<th>Doctor</th>
+																	<th>Appt Date</th>
+																	<th>Amount</th>
+																	<th>Status</th>
+																	<th>Payment ID</th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr>
+																	<td>
+																		<h2 class="table-avatar">
+																			<a class="avatar avatar-sm me-2">
+																				<img class="avatar-img rounded-circle" src="img/doctors/doctor-thumb-01.jpg" alt="User Image">
+																			</a>
+																			<a>Dr. Ruby Perrin <span>Doctor of veterinary medicine</span></a>
+																		</h2>
+																	</td>
+																	<td><?php echo $user_data['booking_date']; ?><span class="d-block text-info"><?php echo $user_data['booking_time']; ?></span></td>
+																	<td><?php echo $user_data['value']; ?></td>
+																	<td><span class="badge rounded-pill bg-success-light"><?php echo $user_data['payment_status']; ?></span></td>
+																	<td><?php echo $user_data['payment_id']; ?></td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+											<?php else: ?>
+												<p>No appointment data available.</p>
+        									<?php endif; ?>
+    											<?php else: ?>
+        										<p>User not logged in or invalid user ID.</p>
+    										<?php endif; ?>
+										</div>
+										<!-- /Appointment Tab -->
+										  
+									</div>
+									<!-- Tab Content -->
+									
+								</div>
+							</div>
 						</div>
 					</div>
 
@@ -389,7 +384,7 @@ if ($result->num_rows > 0) {
 										<p class="mb-0"> Copyright © 2023 All Rights Reserved</p>
 									</div>
 								</div>
-								<!-- <div class="col-md-6 col-lg-6"> -->
+								<div class="col-md-6 col-lg-6">
 								
 									<!-- Copyright Menu -->
 <!-- 									<div class="copyright-menu">
@@ -400,7 +395,7 @@ if ($result->num_rows > 0) {
 									</div> -->
 									<!-- /Copyright Menu -->
 									
-								<!-- </div> -->
+								</div>
 							</div>
 						</div>
 						<!-- /Copyright -->					
@@ -411,6 +406,8 @@ if ($result->num_rows > 0) {
 		   
 		</div>
 		<!-- /Main Wrapper -->
+
+
 	  
 		<!-- jQuery -->
 		<script src="js/jquery-3.7.0.min.js"></script>
@@ -421,12 +418,12 @@ if ($result->num_rows > 0) {
 		<!-- Sticky Sidebar JS -->
         <script src="plugins/theia-sticky-sidebar/ResizeSensor.js"></script>
         <script src="plugins/theia-sticky-sidebar/theia-sticky-sidebar.js"></script>
+
+        <!-- Apex JS -->
+		<script src="plugins/apex/apexcharts.min.js"></script>
 		
 		<!-- Custom JS -->
 		<script src="js/script.js"></script>
-
-    	<script src="https://www.paypal.com/sdk/js?client-id=AT9Pe9ifgcL_Biq9IKRjW8NDY9Fucrey8GgZobdPaUXbwxbSGFlY9lRgjFVG-G9kLGPkMMiOm14H6Lyz&disable-funding=credit,card"></script>
-   		<script src="js/index.js"></script>
 		
 	</body>
 </html>

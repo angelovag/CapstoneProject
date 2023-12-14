@@ -15,9 +15,9 @@ if (!isset($_SESSION['id'])) {
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1" >
-		<meta name="description" content="The responsive professional Doccure template offers many features, like scheduling appointments with  top doctors, clinics, and hospitals via voice, video call & chat.">
-		<meta name="keywords" content="practo clone, doccure, doctor appointment, Practo clone html template, doctor booking template">
-		<meta name="author" content="Practo Clone HTML Template - Doctor Booking Template">
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+		<meta name="author" content="">
 
 		<title>PawPoint</title>
 
@@ -65,8 +65,7 @@ if (!isset($_SESSION['id'])) {
 						<ul class="main-nav">
 							<li>
 								<a href="welcome.php">Home</a>
-							</li>
-							
+							</li>							
 							<li>
 								<a href="how-it-works-users.php">How it works?</a>
 							</li>
@@ -103,7 +102,7 @@ if (!isset($_SESSION['id'])) {
 											<p class="text-muted mb-0">Patient</p>
 										</div>
 									</div>
-									<!-- <a class="dropdown-item" href="doctor-dashboard.html">Dashboard</a> -->
+									<a class="dropdown-item" href="patient-dashboard.php">Dashboard</a>
 									<a class="dropdown-item" href="profile-settings.html">Profile Settings</a>
 									<a class="dropdown-item" href="logout.php">Logout</a>
 								</div>

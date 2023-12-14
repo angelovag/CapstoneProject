@@ -67,11 +67,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	<head>
 		
 		<meta charset="utf-8">
-		<title>Doccure</title>
+		<title>PawPoint</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="description" content="The responsive professional Doccure template offers many features, like scheduling appointments with  top doctors, clinics, and hospitals via voice, video call & chat.">
-		<meta name="keywords" content="practo clone, doccure, doctor appointment, Practo clone html template, doctor booking template">
-		<meta name="author" content="Practo Clone HTML Template - Doctor Booking Template">
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+		<meta name="author" content="">
 		
 		<!-- Favicons -->
 		<link href="img/new_favicon.png" rel="icon">
