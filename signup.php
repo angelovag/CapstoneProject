@@ -1,17 +1,12 @@
 <?php
-// signup.php
+
+// Include the configuration file
+include("config.php");
 
 // Start a session
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Database connection setup
-    $dbHost = "capstone.project";
-    $dbUser = "root";
-    $dbPassword = "";
-    $dbName = "capstone";
-
-    $conn = new mysqli($dbHost, $dbUser, $dbPassword, $dbName);
 
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
@@ -62,12 +57,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error_message_password = "Password is required.";
     } elseif (strlen($password) < 6) {
         $error_message_password = "Password should be at least 6 characters long.";
-    } elseif (!preg_match("/[A-Z]/", $password)) {
-        $error_message_password = "Password should contain at least one uppercase letter.";
-    } elseif (!preg_match("/[a-z]/", $password)) {
-        $error_message_password = "Password should contain at least one lowercase letter.";
-    } elseif (!preg_match("/[0-9]/", $password)) {
-        $error_message_password = "Password should contain at least one digit.";
+    } elseif (!preg_match("/[A-Z]/", $password) || !preg_match("/[a-z]/", $password) || !preg_match("/[0-9]/", $password)) {
+        $error_message_password = "Password should contain at least one uppercase letter, one lowercase letter, and one digit.";
     } else {
     // Password is valid
     }

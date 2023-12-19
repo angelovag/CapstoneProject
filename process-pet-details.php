@@ -1,5 +1,8 @@
 <?php
 
+// Include the configuration file
+include("config.php");
+
 // Start the session
 session_start();
 
@@ -27,14 +30,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: pet-details-users.php?error=$error_message");
         exit();
     }
-
-    // Database connection setup
-    $dbHost = "capstone.project";
-    $dbUser = "root";
-    $dbPassword = "";
-    $dbName = "capstone";
-
-    $conn = new mysqli($dbHost, $dbUser, $dbPassword, $dbName);
 
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);

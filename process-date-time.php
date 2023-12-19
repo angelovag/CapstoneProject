@@ -1,13 +1,14 @@
 <?php
 
+// Include the configuration file
+include("config.php");
+
 // Start the session
 session_start();
 
-$mysqli = new mysqli("capstone.project", "root", "", "capstone");
-
 // Check connection
-if ($mysqli->connect_error) {
-    die("Connection failed: " . $mysqli->connect_error);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
 // Assuming $selectedDate and $selectedTime are provided by the client
@@ -33,7 +34,7 @@ if (empty($selectedDate) || empty($selectedTime)) {
 
 // Check if the selected slot is available
 $checkAvailabilityQuery = "SELECT * FROM bookings WHERE date = ? AND time = ?";
-$stmt = $mysqli->prepare($checkAvailabilityQuery);
+$stmt = $conn->prepare($checkAvailabilityQuery);
 $stmt->bind_param("ss", $selectedDate, $selectedTime);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -49,7 +50,7 @@ if ($result->num_rows > 0) {
 
     // Insert the booking
     $insertBookingQuery = "INSERT INTO bookings (user_id, date, time) VALUES (?, ?, ?)";
-    $stmt = $mysqli->prepare($insertBookingQuery);
+    $stmt = $conn->prepare($insertBookingQuery);
     $stmt->bind_param("iss", $user_id, $selectedDate, $selectedTime);
     $stmt->execute();
     

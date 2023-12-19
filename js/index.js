@@ -7,7 +7,7 @@ paypal.Buttons({
         return actions.order.create({
             purchase_units: [{
                 amount: {
-                    value: '0.1'
+                    value: '32.66'
                 }
             }]
         });
@@ -17,7 +17,6 @@ paypal.Buttons({
             var paymentDetails = {
                 paymentID: data.orderID,
                 payerID: data.payerID,
-                // details: details
                 payment_status: details.status,
                 currency_code: details.purchase_units[0].amount.currency_code,
                 value: details.purchase_units[0].amount.value,
@@ -41,8 +40,8 @@ paypal.Buttons({
 
             xhr.send(JSON.stringify(paymentDetails));
 
-            // Redirect to the success page
-            window.location.replace("booking-success.php");
+            // // Redirect to the success page
+            // window.location.replace("booking-success.php");
         });
     },
     onCancel: function (data) {

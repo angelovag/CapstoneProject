@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if (empty($phone) || !preg_match("/^\d{10}$/", $phone)) {
-        $error_message_phone = "Invalid or empty phone number.";
+        $error_message_phone = "Invalid or empty phone number. The phone number must contain exactly ten digits!";
     } else {
         // Phone is valid
     }

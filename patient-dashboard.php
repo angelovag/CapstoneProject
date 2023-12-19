@@ -1,15 +1,10 @@
 <?php
 
+// Include the configuration file
+include("config.php");
+
 // Start the session
 session_start();
-
-// Establish database connection (replace these values with your database credentials)
-$servername = "capstone.project";
-$username = "root";
-$password = "";
-$dbname = "capstone";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {

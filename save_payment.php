@@ -1,14 +1,10 @@
 <?php
 
+// Include the configuration file
+include("config.php");
+
 // Start the session
 session_start();
-
-$servername = "capstone.project";
-$username = "root";
-$password = "";
-$dbname = "capstone";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
@@ -93,14 +89,6 @@ if (isset($requestData['payment_status'])) {
 
     // Close the connection
     $conn->close();
-
-    // Redirect to the desired page
-    // header("Location: save_payment.php");
-    // exit(); // Ensure that subsequent code is not executed after the header redirect
-} else {
-    echo "Error: 'payment_status' key is not present in the request data. Dumping request data:";
-    echo '<pre>';
-    var_export($requestData);
-    echo '</pre>';
+    
 }
 ?>

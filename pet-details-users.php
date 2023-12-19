@@ -1,6 +1,9 @@
 <?php
-// pet-details-users.php
 
+// Include the configuration file
+include("config.php");
+
+// Start the session
 session_start();
 
 // Check if the user is logged in
@@ -9,12 +12,9 @@ if (!isset($_SESSION['id'])) {
     exit;
 }
 
-// Initialize MySQLi connection
-$mysqli = new mysqli("capstone.project", "root", "", "capstone");
-
 // Check connection
-if ($mysqli->connect_error) {
-    die("Connection failed: " . $mysqli->connect_error);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
 // Fetch user ID from session
@@ -22,7 +22,7 @@ $user_id = $_SESSION['id'];
 
 // Fetch booking information for the user
 $fetchBookingQuery = "SELECT * FROM bookings WHERE user_id = ? ORDER BY id DESC LIMIT 1";
-$stmt = $mysqli->prepare($fetchBookingQuery);
+$stmt = $conn->prepare($fetchBookingQuery);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
